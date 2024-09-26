@@ -6,7 +6,7 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:13:33 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/25 15:39:05 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:21:30 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_data
 	// t_mutex		check_lock;		// Mutex for checking conditions
 	t_mutex		write_lock;			// Mutex for writing/logging
 	t_mutex		dead_lock;			// Mutex for dead flag
-	t_mutex		eat_lock;			// Mutex for eating flag
+	t_mutex		finished_lock;			// Mutex for eating flag
 }				t_data;
 
 
@@ -74,7 +74,9 @@ int		ft_is_digit(char c);
 long	ft_atol(char *str);
 int		init_data(t_data *data);
 long	get_time_in_ms(t_timeval start);
-void	simulation(t_data *data)
-
+void	simulation(t_data *data);
+void	*routine(void *arg);
+void	ft_log(t_philo *philo, char *msg, long time);
+int	if_dead(t_philo *philo);
 
 #endif

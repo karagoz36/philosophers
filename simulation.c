@@ -6,7 +6,7 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:00:31 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/25 15:37:56 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:27:40 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void	monitoring(t_data *data)
 		{
 			if (if_dead(&data->philo[i]))
 				return ;
-			pthread_mutex_lock(&data->eat_lock);
+			pthread_mutex_lock(&data->finished_lock);
 			if (data->max_meal && data->philo[i].eat_cnt >= data->max_meal)
 				data->full_philo_n++;
-			pthread_mutex_unlock(&data->eat_lock);
+			pthread_mutex_unlock(&data->finished_lock);
 		}
 		if (verif_all_philo_eat(data))
 			return ;
@@ -85,5 +85,6 @@ void	simulation(t_data *data)
 	i = -1;
 	while (++i < data->philo_n)
 		pthread_join(data->philo[i].thread, NULL);
+	//free_all(data->philo);
 	return (EXIT_SUCCESS);
 }
