@@ -6,18 +6,24 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:14:10 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/25 15:37:12 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:38:56 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// void	*routine(void)
-// {
-// 	printf("");
-// }
+void	free_all(t_data *data)
+{
+	int	i;
 
-
+	i = 0;
+	while (++i <= data->philo_n)
+		pthread_mutex_destroy(&data->forks[i]);
+	pthread_mutex_destroy(&data->dead_lock);
+	pthread_mutex_destroy(&data->eat_lock);
+	pthread_mutex_destroy(&data->write_lock);
+	pthread_mutex_destroy(&data->check_lock);
+}
 
 int	check_arg(int argc, char **argv)
 {
@@ -53,6 +59,5 @@ int	main(int argc, char **argv)
 	init_data(&data);
 	init_philos(&data);
 	simulation(&data);
-	// free_all(&data);
 	return (EXIT_SUCCESS);
 }

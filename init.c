@@ -6,7 +6,7 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:21:58 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/25 14:48:45 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:46:54 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,17 @@ void	init_data(t_data *data)
 
 	data->dead_f = 0;
 	data->finished_f = 0;
-	//data->one time | philo eat max;
-	i = -1;
-	while (++i < data->philo_n)
+	//data->one time
+	i = 0;
+	while (++i <= data->philo_n)
 		pthread_mutex_init(&data->forks[i], NULL);
+
 	//pthread_mutex_init(&data->check_lock, NULL);
 	pthread_mutex_init(&data->write_lock, NULL);
 	pthread_mutex_init(&data->dead_lock, NULL);
 	pthread_mutex_init(&data->eat_lock, NULL);
+	pthread_mutex_init(&data->check_lock, NULL);
+
 	gettimeofday(&data->start_t, NULL);
 }
 
@@ -46,12 +49,11 @@ void	init_philos(t_data *data)
 {
 	int	i;
 
-	i = -1;
-	while (++i < data->philo_n)
+	i = 0;
+	while (++i <= data->philo_n)
 	{
-		data->philo[i].id = i + 1;
+		data->philo[i].id = i;
 		data->philo[i].eat_cnt = 0;
-		data->philo[i].eating = 0;
 		data->philo[i].data = data;
 		data->philo[i].last_eat = get_time_in_ms(data->start_t);
 		data->philo[i].l_fork = &data->forks[i];
