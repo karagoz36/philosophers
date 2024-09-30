@@ -6,7 +6,7 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 15:38:46 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/30 16:06:20 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:50:34 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,23 @@
 
 void	take_forks(t_philo *philo)
 {
+	t_timeval	start_t;
+
+	start_t = philo->data->start_t;
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->l_fork);
-		ft_log(philo, "has taken left fork", \
-		get_time_in_ms(philo->data->start_t));
+		ft_log(philo, "has taken left fork", get_time_in_ms(start_t));
 		pthread_mutex_lock(philo->r_fork);
-		ft_log(philo, "has taken right fork", \
-		get_time_in_ms(philo->data->start_t));
+		ft_log(philo, "has taken right fork", get_time_in_ms(start_t));
 	}
 	else
 	{
 		pthread_mutex_lock(philo->r_fork);
-		ft_log(philo, "has taken right fork", \
-		get_time_in_ms(philo->data->start_t));
+		ft_log(philo, "has taken right fork", get_time_in_ms(start_t));
 		pthread_mutex_lock(philo->l_fork);
-		ft_log(philo, "has taken left fork", \
-		get_time_in_ms(philo->data->start_t));
+		ft_log(philo, "has taken left fork", get_time_in_ms(start_t));
 	}
-}
-
-int	check_break(t_philo *philo)
-{
-	if (calcul_death_f(philo->data) || check_if_full(philo->data))
-	{
-		pthread_mutex_lock(&philo->data->check_lock);
-		ft_log(philo, "", get_time_in_ms(philo->data->start_t));
-		pthread_mutex_unlock(&philo->data->check_lock);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
 }
 
 int	ft_eat(t_philo *philo)
@@ -66,11 +53,13 @@ int	ft_eat(t_philo *philo)
 
 int	ft_think(t_philo *philo)
 {
+	t_data	*data;
+
 	if (check_break(philo))
 		return (EXIT_FAILURE);
-	ft_log(philo, "is thinking", get_time_in_ms(philo->data->start_t));
-	ft_usleep(philo->data->death_t - philo->data->eat_t - philo->data->sleep_t - 10, philo->data);
-	//??
+	data = philo->data;
+	ft_log(philo, "is thinking", get_time_in_ms(data->start_t));
+	ft_usleep(data->death_t - data->eat_t - data->sleep_t - 10, philo->data);
 	return (EXIT_SUCCESS);
 }
 
@@ -80,22 +69,6 @@ int	ft_sleep(t_philo *philo)
 		return (EXIT_FAILURE);
 	ft_log(philo, "is sleeping", get_time_in_ms(philo->data->start_t));
 	ft_usleep(philo->data->sleep_t, philo->data);
-	return (EXIT_SUCCESS);
-}
-
-int	handle_one_philo(t_data *data)
-{
-	if (data->philo_n == 1)
-	{
-
-		ft_log(data->philo, "has taken fork", get_time_in_ms(data->start_t));
-		ft_usleep(data->death_t, data);
-		ft_log(data->philo, "died", get_time_in_ms(data->start_t));
-		pthread_mutex_lock(&data->dead_lock);
-		data->dead_f = 1;
-		pthread_mutex_unlock(&data->dead_lock);
-		return (EXIT_FAILURE);
-	}
 	return (EXIT_SUCCESS);
 }
 

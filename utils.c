@@ -6,35 +6,22 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 15:27:51 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/30 16:08:25 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:16:58 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	calcul_death_f(t_data *data)
-{
-	pthread_mutex_lock(&data->dead_lock);
-	if (data->dead_f)
-	{
-		pthread_mutex_unlock(&data->dead_lock);
-		return (EXIT_FAILURE);
-	}
-	return (pthread_mutex_unlock(&data->dead_lock), EXIT_SUCCESS);
-}
 
 int	ft_usleep(int mseconds, t_data *data)
 {
 	int	start;
 
 	start = get_time_in_ms(data->start_t);
-	while (!check_dead_f(data) &&
+	while (!check_dead_f(data) && \
 		(get_time_in_ms(data->start_t) - start) < mseconds)
 		usleep(50);
 	return (EXIT_SUCCESS);
 }
-
-
 
 long	get_time_in_ms(t_timeval start)
 {

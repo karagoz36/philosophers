@@ -6,14 +6,14 @@
 #    By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 16:45:27 by tkaragoz          #+#    #+#              #
-#    Updated: 2024/09/30 16:02:28 by tkaragoz         ###   ########.fr        #
+#    Updated: 2024/09/30 16:50:58 by tkaragoz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -pthread # -fsanitize=thread
-SRC_FILES = main.c utils.c init.c routine.c simulation.c ft_log.c
+SRC_FILES = main.c utils.c init.c routine.c simulation.c ft_log.c routine_check.c
 SRCS = $(SRC_FILES)
 OBJS = $(SRCS:.c=.o)
 

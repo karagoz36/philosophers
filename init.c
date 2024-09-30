@@ -6,12 +6,11 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:21:58 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/30 16:02:51 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:54:41 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 void	parse_arg(int argc, char **argv, t_data *data)
 {
@@ -42,7 +41,6 @@ void	init_data(t_data *data)
 	pthread_mutex_init(&data->write_lock, NULL);
 	pthread_mutex_init(&data->dead_lock, NULL);
 	pthread_mutex_init(&data->eat_lock, NULL);
-
 }
 
 void	init_philos(t_data *data)

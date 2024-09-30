@@ -6,7 +6,7 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:14:10 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/30 16:03:49 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:51:53 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static int	check_arg(int argc, char **argv)
 	}
 	return (EXIT_SUCCESS);
 }
-
 
 int	main(int argc, char **argv)
 {
