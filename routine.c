@@ -6,7 +6,7 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 15:38:46 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/27 19:59:27 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:06:20 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	take_forks(t_philo *philo)
 
 int	check_break(t_philo *philo)
 {
-	if (if_dead_f(philo->data) || check_if_full(philo->data))
+	if (calcul_death_f(philo->data) || check_if_full(philo->data))
 	{
 		pthread_mutex_lock(&philo->data->check_lock);
 		ft_log(philo, "", get_time_in_ms(philo->data->start_t));
@@ -83,12 +83,30 @@ int	ft_sleep(t_philo *philo)
 	return (EXIT_SUCCESS);
 }
 
+int	handle_one_philo(t_data *data)
+{
+	if (data->philo_n == 1)
+	{
+
+		ft_log(data->philo, "has taken fork", get_time_in_ms(data->start_t));
+		ft_usleep(data->death_t, data);
+		ft_log(data->philo, "died", get_time_in_ms(data->start_t));
+		pthread_mutex_lock(&data->dead_lock);
+		data->dead_f = 1;
+		pthread_mutex_unlock(&data->dead_lock);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (!if_dead(philo) && !check_if_full(philo->data))
+	if (handle_one_philo(philo->data))
+		return (NULL);
+	while (!calcul_death(philo) && !check_if_full(philo->data))
 	{
 		if (ft_eat(philo))
 			break ;

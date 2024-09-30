@@ -6,7 +6,7 @@
 /*   By: tkaragoz <tkaragoz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:21:58 by tkaragoz          #+#    #+#             */
-/*   Updated: 2024/09/27 19:46:54 by tkaragoz         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:02:51 by tkaragoz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 void	parse_arg(int argc, char **argv, t_data *data)
 {
-	memset(data, 0, sizeof(t_data));
 	data->philo_n = ft_atol(argv[1]);
 	data->death_t = ft_atol(argv[2]);
 	data->eat_t = ft_atol(argv[3]);
@@ -23,6 +22,7 @@ void	parse_arg(int argc, char **argv, t_data *data)
 	data->max_meal = 0;
 	if (argc == 6)
 		data->max_meal = ft_atol(argv[5]);
+	gettimeofday(&data->start_t, NULL);
 }
 
 void	init_data(t_data *data)
@@ -31,18 +31,18 @@ void	init_data(t_data *data)
 
 	data->dead_f = 0;
 	data->finished_f = 0;
-	//data->one time
+	data->printed = 0;
 	i = 0;
-	while (++i <= data->philo_n)
+	while (i < data->philo_n)
+	{
 		pthread_mutex_init(&data->forks[i], NULL);
-
-	//pthread_mutex_init(&data->check_lock, NULL);
+		i++;
+	}
+	pthread_mutex_init(&data->check_lock, NULL);
 	pthread_mutex_init(&data->write_lock, NULL);
 	pthread_mutex_init(&data->dead_lock, NULL);
 	pthread_mutex_init(&data->eat_lock, NULL);
-	pthread_mutex_init(&data->check_lock, NULL);
 
-	gettimeofday(&data->start_t, NULL);
 }
 
 void	init_philos(t_data *data)
@@ -50,13 +50,14 @@ void	init_philos(t_data *data)
 	int	i;
 
 	i = 0;
-	while (++i <= data->philo_n)
+	while (i < data->philo_n)
 	{
-		data->philo[i].id = i;
+		data->philo[i].id = i + 1;
 		data->philo[i].eat_cnt = 0;
 		data->philo[i].data = data;
 		data->philo[i].last_eat = get_time_in_ms(data->start_t);
 		data->philo[i].l_fork = &data->forks[i];
-		data->philo[i].r_fork = &data->forks[(i+1) % data->philo_n];
+		data->philo[i].r_fork = &data->forks[(i + 1) % data->philo_n];
+		i++;
 	}
 }
